@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Você ❤️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #121212;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #000;
+    }
+
+    header h1 {
+      color: #1DB954;
+      font-weight: 700;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 50px 20px;
+      background: linear-gradient(180deg, #181818, #121212);
+    }
+
+    .hero h2 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .hero p {
+      max-width: 600px;
+      margin: 20px auto;
+      font-size: 1.1rem;
+      color: #b3b3b3;
+    }
+
+    .spotify-player {
+      margin: 30px auto;
+      max-width: 400px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .momentos {
+      padding: 40px 20px;
+    }
+
+    .momentos h3 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #1DB954;
+    }
+
+    .cards {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background-color: #181818;
+      border-radius: 12px;
+      width: 250px;
+      overflow: hidden;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card p {
+      padding: 15px;
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #000;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    /* Corações flutuando */
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .heart {
+      position: absolute;
+      color: #1DB954;
+      font-size: 20px;
+      animation: float 5s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Para o Amor da Minha Vida Todinha ❤️</h1>
+  </header>
+
+  <section class="hero">
+    <h2>Você é a minha música favorita 🎶</h2>
+    <p>Amor, cada momento ao seu lado é como a melhor playlist que já existiu. Você é a melodia que acalma, a batida que acelera meu coração e a letra que faz sentido para a minha vida.</p>
+    
+    <div class="spotify-player">
+      <!-- Troque o link abaixo pela música favorita de vocês -->
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4rHZZAmHpZrA3iH5zx8frV?utm_source=generator" 
+      width="100%" height="380" frameborder="0" 
+      allowfullscreen="" 
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <section class="momentos">
+    <h3>Nossos Momentos 💚</h3>
+    <div class="cards">
+      <div class="card">
+        <img src="./assets/4FA69E16-2AA4-41C4-9F8A-C746152C2930.PNG" alt="Momento 1">
+        <p>Aquele dia inesquecível em que tudo parecia perfeito.</p>
+      </div>
+      <div class="card">
+        <img src="./assets/5B4F5FEC-B759-4B4A-8211-300F09074BE2.JPG" alt="Momento 2">
+        <p>Nosso sorriso que ilumina qualquer dia.</p>
+      </div>
+      <div class="card">
+        <img src="./assets/ECFDEFA8-BD89-4E15-8F1E-1E01AE8235D9.JPG" alt="Momento 3">
+        <p>A nossa música tocando, e só existíamos nós dois.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Feito com 💚 por quem mais te ama.
+  </footer>
+
+  <div class="hearts"></div>
+
+  <script>
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.textContent = '💚';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+      document.querySelector('.hearts').appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 5000);
+    }
+
+    setInterval(createHeart, 500);
+  </script>
+</body>
+</html>
