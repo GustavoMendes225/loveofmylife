@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para Rafaela — Nossa Trilha Sonora ❤️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#1DB954" />
+  <style>
+    :root{
+      --spotify-green:#1DB954;
+      --bg:#0d0d0d;
+      --bg-2:#121212;
+      --card:#181818;
+      --text:#ffffff;
+      --muted:#b3b3b3;
+      --accent:#22ff88;
+      --shadow:0 20px 60px rgba(0,0,0,.45);
+      --radius:24px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+    a{color:var(--spotify-green);text-decoration:none}
+
+    /* NAV */
+    .nav{
+      position:fixed; inset:0 auto auto 0; width:100%; height:74px; z-index:50;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 28px; background:rgba(0,0,0,.55); backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .logo{display:flex; gap:14px; align-items:center}
+    .logo .disc{width:38px; height:38px; border-radius:50%; background:conic-gradient(from 0deg,#0f0 0 25%,#0a0 0 50%,#222 0 75%,#141414 0 100%); box-shadow:0 0 0 2px #000, 0 0 0 4px #0a0}
+    .logo h1{margin:0; font-weight:800; letter-spacing:.5px; color:var(--spotify-green); font-size:22px}
+    .nav .cta{display:flex; gap:8px}
+    .btn{
+      background:var(--spotify-green); color:#000; border:none; padding:14px 20px; border-radius:999px; font-weight:700; cursor:pointer; box-shadow:var(--shadow); transition:transform .2s ease, filter .2s ease;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn.secondary{background:#222; color:#fff; border:1px solid #333}
+
+    /* HERO */
+    .hero{
+      position:relative; min-height:100vh; display:grid; place-items:center; text-align:center; padding:120px 20px 80px;
+      background:radial-gradient(80% 60% at 50% 40%, rgba(29,185,84,.25), transparent 60%),
+                 radial-gradient(60% 40% at 80% 10%, rgba(29,185,84,.12), transparent 60%),
+                 linear-gradient(180deg, #0a0a0a, #0d0d0d 40%, #0a0a0a);
+      overflow:hidden;
+    }
+    .hero::after{content:""; position:absolute; inset:-10% -10% auto; height:60%; background:url('https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat; filter:brightness(.35) blur(2px); opacity:.65; z-index:-2; border-radius:0 0 50% 50%/0 0 10% 10%}
+    .hero h2{font-size:clamp(38px,6vw,92px); line-height:1.02; margin:0 0 14px; font-weight:800; letter-spacing:-.5px}
+    .hero p.lead{max-width:900px; margin:0 auto 26px; color:var(--muted); font-size:clamp(18px,2.2vw,26px)}
+    .chips{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:18px}
+    .chip{border:1px solid #2a2a2a; padding:10px 16px; border-radius:999px; color:#eaeaea; background:#111}
+
+    /* STATS BAND */
+    .stats{
+      display:grid; grid-template-columns:repeat(4,minmax(160px,1fr)); gap:16px; width:min(1200px,92%); margin:22px auto 0;
+    }
+    .stat{background:var(--card); border-radius:var(--radius); padding:24px; text-align:center; box-shadow:var(--shadow)}
+    .stat .n{font-size:clamp(28px,4vw,48px); font-weight:800}
+    .stat .label{color:var(--muted)}
+
+    /* MUSIC SECTION */
+    .music{
+      padding:80px 20px; background:linear-gradient(180deg,#0c0c0c,#111 40%, #0c0c0c);
+    }
+    .wrap{width:min(1200px,92%); margin:0 auto}
+    .section-title{font-size:clamp(28px,3.6vw,54px); margin:0 0 8px; font-weight:800}
+    .section-sub{color:var(--muted); margin:0 0 28px}
+    .music-grid{display:grid; grid-template-columns:1.3fr .9fr; gap:30px}
+    .player{background:var(--card); padding:24px; border-radius:var(--radius); box-shadow:var(--shadow); position:relative; overflow:hidden}
+    .pulse{
+      position:absolute; inset:auto -20% -20% -20%; height:240px; background:radial-gradient(closest-side, rgba(29,185,84,.25), transparent); filter:blur(30px); animation:pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+    .quote{background:var(--card); padding:28px; border-radius:var(--radius); display:grid; gap:10px}
+    .quote p{margin:0; color:#eaeaea; font-size:20px}
+    .quote small{color:var(--muted)}
+
+    iframe.spotify{width:100%; height:420px; border:none; border-radius:16px}
+
+    /* TIMELINE */
+    .timeline{padding:80px 0 30px; background:#0a0a0a}
+    .timeline .wrap{position:relative}
+    .rail{position:absolute; left:calc(50% - 2px); top:0; bottom:0; width:4px; background:linear-gradient(#1DB954,transparent), linear-gradient(transparent,#1DB954); opacity:.4}
+    .titems{display:grid; gap:36px}
+    .titem{display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:26px; position:relative}
+    .titem:nth-child(even) .card{order:1}
+    .titem:nth-child(even) .time{order:2}
+    .dot{position:absolute; left:calc(50% - 9px); width:18px; height:18px; border-radius:50%; background:var(--spotify-green); box-shadow:0 0 0 6px rgba(29,185,84,.15)}
+    .time{justify-self:end; text-align:right; color:#ddd}
+    .time h4{margin:0; font-size:26px}
+    .time span{color:var(--muted)}
+    .card{background:var(--card); border-radius:var(--radius); padding:22px; box-shadow:var(--shadow)}
+    .card h5{margin:0 0 6px; font-size:22px}
+    .card p{margin:0; color:#d6d6d6}
+
+    /* GALLERY */
+    .gallery{padding:80px 0}
+    .masonry{columns:4 280px; column-gap:16px}
+    .photo{break-inside:avoid; margin:0 0 16px; border-radius:18px; overflow:hidden; box-shadow:var(--shadow); background:#000}
+    .photo img{width:100%; height:auto; display:block; filter:saturate(1.05) contrast(1.05)}
+
+    /* REASONS */
+    .reasons{padding:80px 0; background:linear-gradient(180deg,#0c0c0c,#101010)}
+    .reasons-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    .reason{background:var(--card); padding:26px; border-radius:var(--radius); box-shadow:var(--shadow); font-size:20px}
+
+    /* FUTURE */
+    .future{padding:80px 0}
+    .steps{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+    .step{background:linear-gradient(180deg,#161616,#1b1b1b); border:1px solid #222; border-radius:22px; padding:24px; box-shadow:var(--shadow)}
+    .step h4{margin:0 0 10px}
+    .step p{margin:0; color:#cfcfcf}
+
+    /* LETTER */
+    .letter{padding:80px 0; background:#0a0a0a}
+    .paper{background:radial-gradient(100% 100% at 50% 0%,#1b1b1b,#121212); border:1px solid #222; border-radius:28px; padding:34px; font-size:22px; line-height:1.7; box-shadow:var(--shadow)}
+
+    /* FOOTER */
+    footer{padding:40px 20px; text-align:center; color:var(--muted); border-top:1px solid #1a1a1a; background:#000}
+
+    /* FLOATERS */
+    .floaters{pointer-events:none; position:fixed; inset:0; z-index:10}
+    .floater{position:absolute; animation:rise linear forwards; opacity:.8; filter:drop-shadow(0 6px 18px rgba(0,0,0,.4))}
+    @keyframes rise{0%{transform:translateY(100vh) scale(.8)}100%{transform:translateY(-10vh) scale(1.4); opacity:0}}
+
+    /* UTIL */
+    .center{display:grid; place-items:center}
+    .mt-40{margin-top:40px}
+
+    /* RESPONSIVE */
+    @media (max-width:900px){
+      .music-grid{grid-template-columns:1fr}
+      .reasons-grid{grid-template-columns:1fr 1fr}
+      .steps{grid-template-columns:1fr 1fr}
+      .titem{grid-template-columns:1fr; text-align:left}
+      .time{justify-self:start; text-align:left}
+      .rail{left:22px;}
+      .dot{left:14px}
+    }
+    @media (max-width:640px){
+      .reasons-grid{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr}
+      .stats{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="logo">
+      <div class="disc" aria-hidden="true"></div>
+      <h1>RafaPlaylist</h1>
+    </div>
+    <div class="cta">
+      <button class="btn secondary" onclick="document.getElementById('music').scrollIntoView({behavior:'smooth'})">Nossa música</button>
+      <button class="btn" onclick="document.getElementById('timeline').scrollIntoView({behavior:'smooth'})">Linha do tempo</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero" role="banner">
+    <div>
+      <h2>Amor, você é a minha música favorita 🎵</h2>
+      <p class="lead">Cada batida do meu coração toca no BPM do seu sorriso. Cada verso da nossa história rima com o seu nome. Hoje eu te celebro com a nossa própria <strong>landing do amor</strong>, no estilo Spotify — porque o nosso amor merece estar no topo das paradas.</p>
+      <div class="chips" aria-label="Etiquetas">
+        <span class="chip">Começamos em <strong>1º de março</strong></span>
+        <span class="chip">Agora: <span id="now"></span></span>
+        <span class="chip">Juntos há <strong id="together-days">—</strong> dias</span>
+      </div>
+      <div class="stats mt-40">
+        <div class="stat"><div class="n" id="days">—</div><div class="label">dias de nós</div></div>
+        <div class="stat"><div class="n" id="hours">—</div><div class="label">horas de conversa</div></div>
+        <div class="stat"><div class="n" id="minutes">—</div><div class="label">minutos de carinho</div></div>
+        <div class="stat"><div class="n" id="seconds">—</div><div class="label">segundos te amando</div></div>
+      </div>
+      <div class="center mt-40">
+        <button class="btn" onclick="document.getElementById('music').scrollIntoView({behavior:'smooth'})">Dar o play 💚</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MUSIC -->
+  <section id="music" class="music" aria-label="Nossa música favorita">
+    <div class="wrap music-grid">
+      <div class="player">
+        <div class="pulse" aria-hidden="true"></div>
+        <h3 class="section-title">Nossa Música — pra sempre no repeat</h3>
+        <p class="section-sub">Quando essa toca, tudo faz sentido. Obrigado por ser a minha melhor canção, Pituca!!</p>
+        <iframe class="spotify" src="https://open.spotify.com/embed/track/4rHZZAmHpZrA3iH5zx8frV?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Spotify Player"></iframe>
+      </div>
+      <div class="quote">
+        <p>“Se amar é arte, com você eu sou álbum completo: faixa a faixa, sem pular.”</p>
+        <small>— Do autor mais apaixonado por você</small>
+        <div class="paper mt-40" style="font-size:18px">
+          <strong>Tracklist do nosso amor</strong>
+          <ol>
+            <li>Play ▶️ — O primeiro olhar</li>
+            <li>Repeat 🔁 — Rir de bobeira </li>
+            <li>Featuring 🤝 — Apoio em tudo</li>
+            <li>Encore 🌟 — Promessas pro futuro</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- GALLERY -->
+  <section class="gallery" aria-label="Galeria de momentos">
+    <div class="wrap">
+      <h3 class="section-title">Nossos Momentos em Alta</h3>
+      <p class="section-sub">Um mural gigante pra gente dar aquele replay visual. (Troque as fotos pelos registros de vocês!)</p>
+      <div class="masonry">
+        <!-- Exemplos de imagens (substitua pelos seus links) -->
+        <figure class="photo"><img src="./assets/140EC8E1-D69D-4193-BE59-43A6172726F8.PNG" alt="Sorriso ao pôr do sol"></figure>
+        <figure class="photo"><img src="./assets/4FA69E16-2AA4-41C4-9F8A-C746152C2930.PNG" alt="Mãos dadas"></figure>
+        <figure class="photo"><img src="./assets/5B4F5FEC-B759-4B4A-8211-300F09074BE2.JPG"></figure>
+        <figure class="photo"><img src="./assets/ECFDEFA8-BD89-4E15-8F1E-1E01AE8235D9.JPG" alt="Café da manhã juntos"></figure>
+        <figure class="photo"><img src="./assets/FA25E922-EB82-4304-BE94-5E4DE4B0A017.PNG"></figure>
+        <figure class="photo"><img src="./assets/IMG_055A02AE1A8A-1.jpeg"></figure>
+        <figure class="photo"><img src="./assets/IMG_5068.png" alt="Risos no parque"></figure>
+        <figure class="photo"><img src="./assets/IMG_5216.png" alt="Abraço apertado"></figure>
+        <figure class="photo"><img src="./assets/IMG_5237.jpg" alt="Abraço apertado"></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- REASONS -->
+  <section class="reasons" aria-label="Razões por que eu te amo">
+    <div class="wrap">
+      <h3 class="section-title">1000+ Razões pra te amar (um começo)</h3>
+      <p class="section-sub">Seleção em destaque — sempre crescendo a cada dia:</p>
+      <div class="reasons-grid">
+        <div class="reason">Seu sorriso que vira trilha sonora.</div>
+        <div class="reason">Seu abraço que é meu fone com cancelamento de ruído.</div>
+        <div class="reason">Seu jeitinho de cuidar de mim.</div>
+        <div class="reason">A leveza que você traz pros meus dias.</div>
+        <div class="reason">Seu apoio nos meus sonhos (e nos seus).</div>
+        <div class="reason">Tudo fica melhor quando estamos juntos.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FUTURE -->
+  <section class="future" aria-label="Planos para o futuro">
+    <div class="wrap">
+      <h3 class="section-title">Próximos Lances do Álbum</h3>
+      <p class="section-sub">Porque toda obra-prima ganha Deluxe Edition.</p>
+      <div class="steps">
+        <div class="step"><h4>Faixa Bônus: Uma viagem só nossa</h4><p>Lugar de natureza, playlist offline e muito cafuné.</p></div>
+        <div class="step"><h4>Feat com amigos</h4><p>Risadas, fotos, memórias novas — a gente em todas.</p></div>
+        <div class="step"><h4>Casa com cheirinho de café</h4><p>Nosso cantinho, nossas regras, nosso som no talo.</p></div>
+        <div class="step"><h4>Créditos finais</h4><p>Promessas mantidas, amor cotidiano, respeito e parceria.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LETTER -->
+  <section class="letter" aria-label="Carta de amor">
+    <div class="wrap">
+      <h3 class="section-title">Carta Aberta para a Rafaela</h3>
+      <div class="paper">
+        Meu amor, queria te dizer o quanto é maravilhoso estar com você. Adoro te conhecer mais e mais a cada dia, descobrir novas facetas do seu sorriso, novos tons na sua voz e cada detalhe que torna você tão único. Cada instante ao seu lado é um presente que a vida me dá, e cada momento juntos se torna inesquecível, como uma música que nunca queremos que termine.
+        <br/><br/>
+        Quando estou com você, tudo ganha mais cor. O riso se espalha como luz, o tempo parece desacelerar, e mesmo os dias comuns se transformam em capítulos extraordinários da nossa história. É como se cada palavra que trocamos fosse um verso perfeito, e cada toque, uma melodia que só nós dois conseguimos ouvir.
+        <br/><br/>
+       Obrigado por cada gesto de carinho, por cada olhar que me entende sem precisar de palavras, por cada abraço que me faz sentir seguro, amado e completo. Com você, aprendi que o amor não é só sentimento, mas também paz, cumplicidade e aventura. Mesmo quando o mundo lá fora parece pesado, você é meu lugar seguro, meu refúgio, meu lar.
+       <br/><br/>
+       Eu te amo de um jeito que não cabe em palavras. Um amor que pulsa em cada batida do meu coração, que dança nas minhas lembranças e que se estende para cada sonho que construímos juntos. Você é meu maior presente, minha história favorita, minha música favorita tocando em loop sem nunca perder a magia.
+       <br/><br/>
+       Adoro imaginar nosso futuro, mesmo sem saber todos os detalhes. Imagino risadas, cafés compartilhados, viagens inesperadas, abraços no meio da tempestade e trilhas sonoras que só nós conhecemos. Imagino nós dois envelhecendo juntos, colecionando momentos, memórias e sorrisos, sempre nos apoiando, sempre nos descobrindo.
+       <br/><br/>
+       Que a sua noite seja tranquila, serena e cheia de bons sonhos. Dorme bem, meu amor, e leva com você o meu abraço apertado, o meu beijo carinhoso e todo o meu amor que cresce a cada dia. Saiba que cada manhã é uma nova oportunidade de te amar ainda mais, e cada noite é a certeza de que, ao seu lado, estou no lugar certo.
+       <br/><br/>
+        Obrigado por existir, por ser quem você é e por me permitir fazer parte da sua vida. Eu te escolho hoje, amanhã e sempre, e prometo fazer da nossa história algo eterno, intenso e inesquecível. ♥️♥️♥️
+        <br/><br/>Ass: quem te ama em loop. 💚
+      </div>
+      <div class="center mt-40"><button class="btn" id="surprise">Modo ♡ TURBO</button></div>
+    </div>
+  </section>
+
+  <footer>
+    Feito com <span style="color:var(--spotify-green)">💚</span> para o Amor da minha vida  — por quem mais te ama. | Estilo Spotify, amor infinitamente maior.
+  </footer>
+
+  <!-- FLOATERS LAYER -->
+  <div class="floaters" aria-hidden="true" id="floaters"></div>
+
+  <script>
+    // ====== CONFIG ======
+    const START_YEAR = new Date().getFullYear(); // ajuste se quiser
+    const START_DATE = new Date(START_YEAR, 2, 1, 0, 0, 0); // 1º de março, mês 2 (0-based)
+
+    // ====== CLOCK & COUNTER ======
+    const nowEl = document.getElementById('now');
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+    const togetherDaysEl = document.getElementById('together-days');
+
+    function pad(n){return n.toString().padStart(2,'0')}
+
+    function tick(){
+      const now = new Date();
+      nowEl.textContent = now.toLocaleString('pt-BR', { dateStyle:'full', timeStyle:'medium' });
+
+      const diff = now - START_DATE;
+      const d = Math.floor(diff / (1000*60*60*24));
+      const h = Math.floor((diff / (1000*60*60)) % 24);
+      const m = Math.floor((diff / (1000*60)) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+
+      togetherDaysEl.textContent = d;
+      daysEl.textContent = d;
+      hoursEl.textContent = (d*24 + h);
+      minutesEl.textContent = (d*24*60 + h*60 + m);
+      secondsEl.textContent = (d*24*60*60 + h*60*60 + m*60 + s);
+    }
+    tick(); setInterval(tick, 1000);
+
+    // ====== TIMELINE BUILDER ======
+    const tWrap = document.getElementById('timeline-items');
+
+    function humanMonth(m){
+      const names = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+      return names[m];
+    }
+
+    function buildTimeline(){
+      const items = [];
+      const now = new Date();
+      // Marcar do mês de início até o mês atual
+      let cursor = new Date(START_DATE.getFullYear(), START_DATE.getMonth(), 1);
+      const end = new Date(now.getFullYear(), now.getMonth(), 1);
+
+      // Evento inicial fixo
+      items.push({date: START_DATE, title:'O Play apertou', text:'Nosso começo em 1º de março. O mundo ganhou trilha sonora.'});
+
+      while(cursor <= end){
+        if(cursor.getTime() !== START_DATE.getTime()){
+          const label = `${humanMonth(cursor.getMonth())}/${cursor.getFullYear()}`;
+          items.push({date:new Date(cursor), title:`Nosso mês ${label}`, text:'Risos, fotos, mensagens inesperadas, mais um verso na nossa canção.'});
+        }
+        cursor.setMonth(cursor.getMonth()+1);
+      }
+
+      // Evento final
+      items.push({date: now, title:'O Agora', text:'Este exato momento: eu escolhendo você de novo. E de novo. E de novo.'});
+
+      // Render
+      tWrap.innerHTML = '';
+      items.forEach((it, i)=>{
+        const el = document.createElement('div');
+        el.className = 'titem';
+        el.innerHTML = `
+          <div class="time">
+            <h4>${it.date.toLocaleDateString('pt-BR')}</h4>
+            <span>${it.date.toLocaleTimeString('pt-BR')}</span>
+          </div>
+          <div class="card">
+            <h5>${it.title}</h5>
+            <p>${it.text}</p>
+          </div>
+          <div class="dot" style="top:${(i*140)+12}px"></div>
+        `;
+        tWrap.appendChild(el);
+      });
+    }
+    buildTimeline();
+
+    // ====== FLOATING HEARTS & NOTES ======
+    const floaters = document.getElementById('floaters');
+    const icons = ['💚','🎵','🎶','💖','✨'];
+
+    function spawnFloater(forceTop){
+      const el = document.createElement('div');
+      el.className = 'floater';
+      el.textContent = icons[Math.floor(Math.random()*icons.length)];
+      el.style.left = Math.random()*100 + 'vw';
+      el.style.fontSize = (Math.random()*36 + 18) + 'px';
+      el.style.animationDuration = (Math.random()*5 + 6) + 's';
+      if(forceTop){ el.style.top = (Math.random()*20 + 70) + 'vh'; }
+      floaters.appendChild(el);
+      setTimeout(()=> el.remove(), 12000);
+    }
+    const floaterInterval = setInterval(()=>spawnFloater(false), 600);
+
+    // Surprise Turbo Mode
+    let turbo = false; let turboInterval = null;
+    document.getElementById('surprise').addEventListener('click',()=>{
+      turbo = !turbo;
+      if(turbo){
+        document.getElementById('surprise').textContent = 'Modo ♡ TURBO (ON)';
+        turboInterval = setInterval(()=>{ for(let i=0;i<6;i++) spawnFloater(true); }, 400);
+      } else {
+        document.getElementById('surprise').textContent = 'Modo ♡ TURBO';
+        clearInterval(turboInterval);
+      }
+    });
+
+    // Smooth reveal on load
+    document.addEventListener('DOMContentLoaded',()=>{
+      document.body.animate([{opacity:0},{opacity:1}],{duration:900,fill:'forwards'});
+    });
+  </script>
+</body>
+</html>
